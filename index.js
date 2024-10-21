@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 
 //Const reservaRoutes = requiere('./routes/reservaRoutes');
 
-const db = require('./config/db');
+//const db = require('./config/db');
 
 const app = express();
 app.use(express.json());
