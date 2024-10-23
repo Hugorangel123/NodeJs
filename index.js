@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const eventRoutes = require('./routes/eventRoutes')
-const db = require('./config/db');
+const db = require('./config/mysql');
 //Const reservaRoutes = require('./routes/reservaRoutes');
 dotenv.config();
 

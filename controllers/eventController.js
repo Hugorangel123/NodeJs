@@ -1,91 +1,116 @@
 const { json } = require("express");
-const db = require('../config/db')
+const db = require('../config/mysql')
 
 const {
 selectEventos,
-selectEvento
-}=require('../dal/local')
+selectEvento,
+// updateEvento,
+insertEvento,
+deleteEvento
+}=require('../dal/mysql');
+const { eventos } = require("../dal/mysql");
 
   
 
 
-    exports.getEvento = (req, res) => {
+exports.getEvento =  async (req, res) => {
 
-         const { id } = req.params;
-        // try {   
-        //     db.query(`SELECT * FROM eventos WHERE ID = ${id}`,(err,results) =>{
-        //        if(err) return res.status(500).json(err);
-        //         res.status(200).json(results);
-        //     });
+          const { id } = req.params;
+//         // try {   
+//         //     db.query(`SELECT * FROM eventos WHERE ID = ${id}`,(err,results) =>{
+//         //        if(err) return res.status(500).json(err);
+//         //         res.status(200).json(results);
+//         //     });
     
-        // } catch (error){
-        //     res.status(500).json(error.message);
-        // }
+//         // } catch (error){
+//         //     res.status(500).json(error.message);
+//         // }
 
-        res.status(200).json(selectEvento(id));
+       
+        try{
+             const evento = await selectEvento(id);
 
-    }
+             if(evento){
+                 res.status(200).json(evento);
+                 console.info(evento);
+            }else{
+                 res.status(500).json("ERROR NO EXISTE")
+             }
 
-exports.getEventos=(req,res) =>{
-    // db.query('SELECT * FROM eventos',(err,results) =>{
-    //     if(err) return res.status(200).json(err);
-    //     res.status(200).json(results);
-    // });
+        }catch(err){
+             res.status(500).json(err.message);       }
 
-    res.status(200).json(selectEventos());
-}
-
-exports.editEvento=(req,res)=>{
-     const{ id }= req.params;
-    // const {nombre, descripcion} = req.body;
-    
-    // const evento = eventos.find(evento => evento.id==id);
-    // evento.nombre=nombre;
-    // evento.descripcion=descripcion;
-
-    // console.info(eventos)
-
-    // res.status(200).json(`Se realizaron en el evento ${id}`);
-
-    
+      
 
 }
 
+exports.getEventos= async (req,res) =>{
+    const eventos = await selectEventos()
+    res.status(200).json(eventos);
 
-exports.createEvento=(req,res)=>{
-    const {nombre, descripcion} = req.body;
-    const id =eventos.length+1;
-    const evento={
-        id,
-        nombre,
-        descripcion
-    };
+}
 
-    eventos.push(evento);
+// exports.editEvento=(req,res)=>{
+//      const{ id }= req.params;
+//     const {nombre, descripcion} = req.body;
+    
+//     const editid = updateEvento(id, nombre, descripcion);
+//     if(!editid){
+//         res.status(404).json("Evento no encontrado");
+//     }else{
+//         res.status(200).json(`Se realizaron modificaciones en el evento ${editid}`);
+//     }
 
-    console.info(eventos);
+//     // res.status(200).json(`Se realizaron en el evento ${id}`);
+
     
 
+// }
+
+
+exports.createEvento= async (req,res)=>{
+     const {nombre,descripcion,fecha,lugar} = req.body;
+try{
+    if(!nombre){
+        res.status(400).json('El nombre no es valido');
+     }
+     if(!descripcion){
+        res.status(400).json('El nombre no es valido');
+     }
+     if(!lugar){
+        res.status(400).json('El nombre no es valido');
+     }
+     if(!fecha){
+        fecha= new Date();
+     }
+
+    const id =  await insertEvento(nombre,descripcion,fecha,lugar);  
 
     res.status(200).json(`Se creo un nuevo evento: ${nombre}, con id ${id}`);
+}catch(err){
+    console.info(err.message)
+}
+   
 }
 
 
-exports.deleteEvento=(req, res) => {
+ exports.deleteEvento= async(req, res) => {
+    const { id } = req.params;
     try{
 
+        const evento = await deleteEvento(id);
 
-    const { id } = req.params;
+        if(evento){
+            res.status(200).json(evento);
+            console.info(evento);
+       }else{
+            res.status(500).json("ERROR NO EXISTE")
+        }
 
-    const nombre = eventos.find(evento => evento.id == id).nombre
-    eventos = eventos.filter(evento => evento.id != id);
+   }catch(err){
+        res.status(500).json(err.message);       }
 
-
-    console.info(eventos);
-
-    res.status(200).json('Se elimino el evento: ' + nombre);
-    } catch (error) {
-        res.status(400).json('Ocurrio un error');
-    }
+    
+    
 
 }
