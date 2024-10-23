@@ -4,7 +4,7 @@ const db = require('../config/mysql')
 const {
 selectEventos,
 selectEvento,
-// updateEvento,
+updateEvento,
 insertEvento,
 deleteEvento
 }=require('../dal/mysql');
@@ -50,22 +50,16 @@ exports.getEventos= async (req,res) =>{
 
 }
 
-// exports.editEvento=(req,res)=>{
-//      const{ id }= req.params;
-//     const {nombre, descripcion} = req.body;
+exports.editEvento= async(req,res)=>{
+     const{ id }= req.params;
+    const {nombre, descripcion,fecha,lugar} = req.body;
     
-//     const editid = updateEvento(id, nombre, descripcion);
-//     if(!editid){
-//         res.status(404).json("Evento no encontrado");
-//     }else{
-//         res.status(200).json(`Se realizaron modificaciones en el evento ${editid}`);
-//     }
-
-//     // res.status(200).json(`Se realizaron en el evento ${id}`);
+    const filasAfectadas =  await updateEvento(id, nombre, descripcion,fecha,lugar);
+    res.status(200).json(`Se modificaron ${filasAfectadas} filas`)
 
     
 
-// }
+}
 
 
 exports.createEvento= async (req,res)=>{
@@ -101,14 +95,15 @@ try{
         const evento = await deleteEvento(id);
 
         if(evento){
-            res.status(200).json(evento);
-            console.info(evento);
+            res.status(200).json( `Se elimino el evento:${evento}`);
+            
        }else{
             res.status(500).json("ERROR NO EXISTE")
         }
 
    }catch(err){
-        res.status(500).json(err.message);       }
+        res.status(500).json(err.message);      
+    }
 
     
     

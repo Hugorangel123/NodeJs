@@ -27,13 +27,13 @@ exports.selectEvento = async (id) =>{
     exports.deleteEvento = async (id) => {
         try {
            
-            let [result] = await db.promise().query(
+            let [result] = await db.promise().execute(
                 'DELETE FROM eventos WHERE id = ?',
                 [id]
             );
             
             
-            return result.id;
+            return id
     
         } catch (err) {
             console.error(err.message);
@@ -52,6 +52,20 @@ exports.selectEvento = async (id) =>{
           }catch(err){
             console.error(err.message);
           }
+    }
+
+    exports.updateEvento= async (id,nombre,descripcion,fecha,lugar) =>{
+        try{
+            let result = await db.promise().execute(
+                'UPDATE eventos SET nombre = ?, descripcion = ?, fecha = ?, lugar = ? WHERE id=?',
+                [nombre,descripcion,fecha,lugar,id]
+            )
+            ;return result[0].affectedRows;
+            
+        }catch(err){
+            console.error(err.message);
+        }
+        
     }
     
 
