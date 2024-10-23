@@ -95,6 +95,7 @@ try{
         const evento = await deleteEvento(id);
 
         if(evento){
+            
             res.status(200).json( `Se elimino el evento:${evento}`);
             
        }else{
