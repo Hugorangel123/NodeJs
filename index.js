@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const eventRoutes = require('./routes/eventRoutes')
 const db = require('./config/db');
-//Const reservaRoutes = requiere('./routes/reservaRoutes');
+//Const reservaRoutes = require('./routes/reservaRoutes');
 dotenv.config();
 
 
@@ -10,6 +10,8 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/eventos',eventRoutes);
+
+
 
 //app.use('/api/eventos',reservaRoutes);
 
