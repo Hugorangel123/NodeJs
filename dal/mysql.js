@@ -22,9 +22,9 @@ exports.selectEvento = async (id) =>{
       }catch(err){
         console.error(err.message);
       }
-    }
+};
 
-    exports.deleteEvento = async (id) => {
+exports.deleteEvento = async (id) => {
         try {
            
             let [result] = await db.promise().execute(
@@ -39,9 +39,9 @@ exports.selectEvento = async (id) =>{
             console.error(err.message);
             
         }
-    };
+};
 
-    exports.insertEvento = async (nombre, descripcion, fecha, lugar) =>{
+exports.insertEvento = async (nombre, descripcion, fecha, lugar) =>{
         try{
             let result = await db.promise().execute(
                 'INSERT INTO eventos(nombre, descripcion, fecha, lugar) VALUES(?,?,?,?)',
@@ -52,9 +52,9 @@ exports.selectEvento = async (id) =>{
           }catch(err){
             console.error(err.message);
           }
-    }
+};
 
-    exports.updateEvento= async (id,nombre,descripcion,fecha,lugar) =>{
+exports.updateEvento= async (id,nombre,descripcion,fecha,lugar) =>{
         try{
             let result = await db.promise().execute(
                 'UPDATE eventos SET nombre = ?, descripcion = ?, fecha = ?, lugar = ? WHERE id=?',
@@ -66,6 +66,6 @@ exports.selectEvento = async (id) =>{
             console.error(err.message);
         }
         
-    }
+};
     
 

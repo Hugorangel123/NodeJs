@@ -1,6 +1,5 @@
 const { json } = require("express");
 const db = require('../config/mysql')
-
 const {
 selectEventos,
 selectEvento,
@@ -10,23 +9,9 @@ deleteEvento
 }=require('../dal/mysql');
 const { eventos } = require("../dal/mysql");
 
-  
-
-
 exports.getEvento =  async (req, res) => {
 
-          const { id } = req.params;
-//         // try {   
-//         //     db.query(`SELECT * FROM eventos WHERE ID = ${id}`,(err,results) =>{
-//         //        if(err) return res.status(500).json(err);
-//         //         res.status(200).json(results);
-//         //     });
-    
-//         // } catch (error){
-//         //     res.status(500).json(error.message);
-//         // }
-
-       
+          const { id } = req.params;      
         try{
              const evento = await selectEvento(id);
 
@@ -61,7 +46,6 @@ exports.editEvento= async(req,res)=>{
 
 }
 
-
 exports.createEvento= async (req,res)=>{
      const {nombre,descripcion,fecha,lugar} = req.body;
 try{
@@ -87,7 +71,6 @@ try{
    
 }
 
-
  exports.deleteEvento= async(req, res) => {
     const { id } = req.params;
     try{
@@ -106,7 +89,5 @@ try{
         res.status(500).json(err.message);      
     }
 
-    
-    
-
+  
 }
