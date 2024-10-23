@@ -1,11 +1,10 @@
 const express = require('express');
 const dotenv = require('dotenv');
-
 const eventRoutes = require('./routes/eventRoutes')
-
+const db = require('./config/db');
 //Const reservaRoutes = requiere('./routes/reservaRoutes');
+dotenv.config();
 
-//const db = require('./config/db');
 
 const app = express();
 app.use(express.json());
