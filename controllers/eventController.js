@@ -2,7 +2,8 @@ const { json } = require("express");
 const db = require('../config/db')
 
 const {
-selectEventos
+selectEventos,
+selectEvento
 }=require('../dal/local')
 
   
@@ -10,7 +11,7 @@ selectEventos
 
     exports.getEvento = (req, res) => {
 
-        // const { id } = req.params;
+         const { id } = req.params;
         // try {   
         //     db.query(`SELECT * FROM eventos WHERE ID = ${id}`,(err,results) =>{
         //        if(err) return res.status(500).json(err);
@@ -20,6 +21,9 @@ selectEventos
         // } catch (error){
         //     res.status(500).json(error.message);
         // }
+
+        res.status(200).json(selectEvento(id));
+
     }
 
 exports.getEventos=(req,res) =>{
@@ -32,17 +36,18 @@ exports.getEventos=(req,res) =>{
 }
 
 exports.editEvento=(req,res)=>{
-    const{ id }= req.params;
-    const {nombre, descripcion} = req.body;
+     const{ id }= req.params;
+    // const {nombre, descripcion} = req.body;
     
-    const evento = eventos.find(evento => evento.id==id);
-    evento.nombre=nombre;
-    evento.descripcion=descripcion;
+    // const evento = eventos.find(evento => evento.id==id);
+    // evento.nombre=nombre;
+    // evento.descripcion=descripcion;
 
-    console.info(eventos)
+    // console.info(eventos)
 
-    res.status(200).json(`Se realizaron en el evento ${id}`);
+    // res.status(200).json(`Se realizaron en el evento ${id}`);
 
+    
 
 }
 
