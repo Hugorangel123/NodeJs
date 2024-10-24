@@ -7,7 +7,7 @@ updateEvento,
 insertEvento,
 deleteEvento
 }=require('../dal/mysql');
-const { eventos } = require("../dal/mysql");
+const { eventos } = require("../dal/local");
 
 exports.getEvento =  async (req, res) => {
 
@@ -38,9 +38,21 @@ exports.getEventos= async (req,res) =>{
 exports.editEvento= async(req,res)=>{
      const{ id }= req.params;
     const {nombre, descripcion,fecha,lugar} = req.body;
-    
     const filasAfectadas =  await updateEvento(id, nombre, descripcion,fecha,lugar);
-    res.status(200).json(`Se modificaron ${filasAfectadas} filas`)
+
+    try{
+        if(filasAfectadas){
+            res.status(200).json(`Se realizaron modificaciones en el evento:  ${filasAfectadas} `)
+        }else{
+            res.status(404).json('Evento no encontrado')
+        }
+        
+        
+    }catch(err){
+        res.status(500).json(err.message)
+    }
+    
+   
 
     
 
@@ -77,9 +89,10 @@ try{
 
         const evento = await deleteEvento(id);
 
+
         if(evento){
             
-            res.status(200).json( `Se elimino el evento:${evento}`);
+            res.status(200).json( `Se elimino el evento: ${id}`);
             
        }else{
             res.status(500).json("ERROR NO EXISTE")
